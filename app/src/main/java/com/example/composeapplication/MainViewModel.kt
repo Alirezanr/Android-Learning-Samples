@@ -24,12 +24,39 @@ class MainViewModel : ViewModel() {
 
     /**
      * Hot flows: emits value if there are no collectors.
+     * StateFlow will re-emit values when new collector subscribes to it (like when screen rotation happens).
      * */
     private val _stateFlow = MutableStateFlow(0)
     val stateFlow = _stateFlow.asStateFlow()
 
-    init {
 
+    /**
+     * Sends one-time events like channels(doesn't re-emit values).
+     * channels can have only one subscriber(collector) but SharedFlows can have multiple subscribers (collector).
+     * We can give initial integer value as cache size
+     *   so whenever a new collector subscribes to shared flow, gets last 5 cached emits.
+     */
+    private val _sharedFlow = MutableSharedFlow<Int>(replay = 5)
+    val sharedFlow = _sharedFlow.asSharedFlow()
+
+    init {
+        handleSharedFlow()
+    }
+
+    private fun handleSharedFlow() {
+        viewModelScope.launch {
+            _sharedFlow.emit(1)
+            _sharedFlow.emit(2)
+            _sharedFlow.emit(3)
+            _sharedFlow.emit(4)
+            _sharedFlow.emit(5)
+            _sharedFlow.emit(6)
+        }
+        viewModelScope.launch {
+            sharedFlow.collect { number ->
+                Log.i("!!!", "Value is $number")
+            }
+        }
     }
 
     //State flow :
@@ -113,7 +140,7 @@ class MainViewModel : ViewModel() {
             ids.flatMapLatest { id ->
                 //combines result of a flow with inner flow(cancels inner flow if it takes too long).
                 flow {
-                    //delay(500)
+                    delay(500)
                     emit(id + 1)
                 }
             }.collect { id ->

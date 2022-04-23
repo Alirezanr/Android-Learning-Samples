@@ -61,32 +61,40 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-        /*
-        //How to collect state flow in Xml based ui.
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.stateFlow.collectLatest { number ->
-                    //binding.textView.text = number.toString()
-                }
-            }
-        }
-
-        //or use extension function(a simpler way):
-        collectLatestLifecycleFlow(mainViewModel.stateFlow) { number ->
-            //binding.textView.text = number.toString()
-        }
-
-        collectLatestLifecycleFlow(viewModel.stateFlow, ::initStateFlowResult)
-        */
-
-    }
-
-    fun initStateFlowResult(number: Int) {
-        //binding.textView.text = number.toString()
     }
 }
 
+
+
+/*
+
+//inside activity or fragment:
+fun setupObservers(){
+
+    //How to collect state flow in Xml based ui.
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.stateFlow.collectLatest { number ->
+                //binding.textView.text = number.toString()
+            }
+        }
+    }
+
+    //or use extension function(a simpler way):
+    collectLatestLifecycleFlow(mainViewModel.stateFlow) { number ->
+        //binding.textView.text = number.toString()
+    }
+
+    collectLatestLifecycleFlow(viewModel.stateFlow, ::initStateFlowResult)
+
+}
+fun initStateFlowResult(number: Int) {
+    //binding.textView.text = number.toString()
+}
+
+
+
+//Extension function for collecting flows.
 //Note : change ComponentActivity to AppCompatActivity in xml base projects.
 fun <T> ComponentActivity.collectLatestLifecycleFlow(flow: Flow<T>, collect: suspend (T) -> Unit) {
     lifecycleScope.launch {
@@ -95,3 +103,6 @@ fun <T> ComponentActivity.collectLatestLifecycleFlow(flow: Flow<T>, collect: sus
         }
     }
 }
+
+
+*/
