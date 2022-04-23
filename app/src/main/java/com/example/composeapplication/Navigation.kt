@@ -5,46 +5,25 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import com.example.composeapplication.destinations.DetailScreenDestination
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 fun Navigation() {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
-        composable(route = Screen.MainScreen.route) {
-            MainScreen(navController = navController)
-        }
-        composable(
-            //mandatory argument :
-            route = Screen.DetailScreen.route + "/{name}",
-            //optional argument:
-            //route = Screen.DetailScreen.route + "?name={name}",
-            arguments = listOf(
-                navArgument("name") {
-                    type = NavType.StringType
-                    defaultValue = "Alireza"
-                    nullable = true
-                })
-        ) { entery ->
-            DetailScreen(name = entery.arguments?.getString("name"))
-        }
-    }
+    DestinationsNavHost(navGraph = NavGraphs.root)
 }
 
-
+@Destination(start = true)
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(
+    navigator: DestinationsNavigator
+) {
     var text by remember {
         mutableStateOf("")
     }
@@ -67,7 +46,9 @@ fun MainScreen(navController: NavController) {
             modifier = Modifier.align(Alignment.End),
             onClick = {
                 if (text.isNotBlank())
-                    navController.navigate(Screen.DetailScreen.withArgs(text))
+                    navigator.navigate(
+                        DetailScreenDestination(text)
+                    )
                 else
                     Log.i("!!!", "MainScreen: Text is Empty")
             }
@@ -77,6 +58,7 @@ fun MainScreen(navController: NavController) {
     }
 }
 
+@Destination
 @Composable
 fun DetailScreen(name: String?) {
     Box(
