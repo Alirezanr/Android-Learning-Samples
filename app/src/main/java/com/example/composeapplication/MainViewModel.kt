@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
+    /**
+     * Cold flows: emits nothing until somewhere we collect its data
+     * */
     val countDownFlow = flow<Int> {
         val startValue = 5
         var countDownValue = startValue
@@ -19,10 +22,23 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Hot flows: emits value if there are no collectors.
+     * */
+    private val _stateFlow = MutableStateFlow(0)
+    val stateFlow = _stateFlow.asStateFlow()
+
     init {
-        bufferFlowOperators()
+
     }
 
+    //State flow :
+    fun increment() {
+        _stateFlow.value += 1
+    }
+
+    //-------------------
+    //Flow operators:
     private fun flowSimpleOperators() {
         viewModelScope.launch {
             countDownFlow
