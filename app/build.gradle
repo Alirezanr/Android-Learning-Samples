@@ -18,11 +18,38 @@ android {
             useSupportLibrary true
         }
     }
+    //define types of product flavor:
+    flavorDimensions "paidMode", "minSdk"
+    productFlavors {
+        free {
+            dimension "paidMode"
+            applicationIdSuffix ".free"
+        }
+        paid {
+            dimension "paidMode"
+            applicationIdSuffix ".paid"
+        }
+        minSdk30 {
+            dimension "minSdk"
+            minSdk 30
+        }
+        minSdk21 {
+            dimension "minSdk"
+            minSdk 21
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        //define custom build types
+        beta {
+            minifyEnabled false
+            //append to package-name:
+            applicationIdSuffix ".beta"
         }
     }
     compileOptions {
@@ -58,4 +85,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+
+    //implements only for specific build variant.
+    //freeMinSdk21DebugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 }
