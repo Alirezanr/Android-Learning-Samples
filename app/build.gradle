@@ -18,6 +18,7 @@ android {
             useSupportLibrary true
         }
     }
+
     //define types of product flavor:
     flavorDimensions "paidMode", "minSdk"
     productFlavors {
@@ -88,4 +89,55 @@ dependencies {
 
     //implements only for specific build variant.
     //freeMinSdk21DebugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+}
+
+task printHelloWord() {
+    println "Hello word"
+    doFirst {
+        println "First"
+    }
+    doLast {
+        println "Last"
+    }
+}
+
+/**
+ * Registers tasks to execute them in the Terminal.
+ * */
+task registerSomeTasks() {
+    10.times { i ->
+        tasks.register("task$i") {
+            doLast {
+                println "Task number $i"
+            }
+        }
+    }
+    //Makes sure these tasks run before task1
+    tasks.named("task1") {
+        dependsOn "task4", "task5", "task6"
+    }
+    //Makes sure task1 runs before task registerSomeTasks()
+    dependsOn "task1"
+}
+
+/**
+ * A task for every time we build our project, copy the apk file to destinationDir and rename it and
+ * also before copying apk file run unit tests.
+ * */
+task copyApk(type: Copy, dependsOn: "test") {
+    def sourceDir = layout.buildDirectory.dir("intermediates/apk/freeMinSdk21/debug/app-free-minSdk21-debug.apk")
+    def destinationDir = "$rootDir/apk"
+    from sourceDir
+    into destinationDir
+    rename "app-free-minSdk21-debug.apk", "gradle-experimental.apk"
+    doLast {
+        def file = new File(destinationDir, "gradle-experimental.apk")
+        ant.checksum file: file.path
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == "assembleDebug") {
+        task.finalizedBy "copyApk"
+    }
 }
