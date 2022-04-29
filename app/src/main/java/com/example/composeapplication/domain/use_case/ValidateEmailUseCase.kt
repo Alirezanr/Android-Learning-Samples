@@ -1,6 +1,6 @@
 package com.example.composeapplication.domain.use_case
 
-import android.util.Patterns
+import com.example.composeapplication.domain.util.isValidEmail
 
 class ValidateEmailUseCase {
     operator fun invoke(email: String): ValidationResult {
@@ -11,7 +11,7 @@ class ValidateEmailUseCase {
                     errorMessage = "Email can't be empty."
                 )
             }
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+            !email.isValidEmail() -> {
                 ValidationResult(
                     successful = false,
                     errorMessage = "Enter a valid email address."
