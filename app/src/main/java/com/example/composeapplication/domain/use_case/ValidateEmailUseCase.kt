@@ -1,5 +1,6 @@
 package com.example.composeapplication.domain.use_case
 
+import com.example.composeapplication.domain.util.Constants
 import com.example.composeapplication.domain.util.isValidEmail
 
 class ValidateEmailUseCase {
@@ -8,13 +9,13 @@ class ValidateEmailUseCase {
             email.isBlank() -> {
                 ValidationResult(
                     successful = false,
-                    errorMessage = "Email can't be empty."
+                    errorMessage = Constants.BLANK_EMAIL_ADDRESS_ERROR
                 )
             }
             !email.isValidEmail() -> {
                 ValidationResult(
                     successful = false,
-                    errorMessage = "Enter a valid email address."
+                    errorMessage = Constants.INVALID_EMAIL_ADDRESS_ERROR
                 )
             }
             else -> {
