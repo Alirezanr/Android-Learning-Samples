@@ -29,7 +29,7 @@ class MainViewModel(
             is RegistrationFormEvent.RepeatedPasswordChanged -> {
                 state = state.copy(repeatedPassword = event.repeatedPassword)
             }
-            is RegistrationFormEvent.AcceptedTerms -> {
+            is RegistrationFormEvent.AcceptTerms -> {
                 state = state.copy(acceptedTerms = event.isAccepted)
             }
             is RegistrationFormEvent.Submit -> {
@@ -64,6 +64,13 @@ class MainViewModel(
         }
 
         viewModelScope.launch {
+            //disable errors:
+            state = state.copy(
+                emailError = null,
+                passwordError = null,
+                repeatedPasswordError = null,
+                termsError = null
+            )
             validationEventChannel.send(ValidationEvent.Success)
         }
     }
