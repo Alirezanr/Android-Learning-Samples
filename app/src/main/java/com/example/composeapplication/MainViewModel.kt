@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     /**
-     * Cold flows: emits nothing until somewhere we collect its data
+     * Cold flows: emits nothing until somewhere we collect its data(subscribe a collector to it)
      * */
     val countDownFlow = flow<Int> {
         val startValue = 5
