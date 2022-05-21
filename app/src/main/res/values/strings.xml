@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">ComposeApplication</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores consectetur, consequuntur debitis dolorem ducimus ea eaque eius et eveniet hic id nihil nisi nobis numquam, placeat ratione sunt voluptates.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores consectetur, consequuntur debitis dolorem ducimus ea eaque eius et eveniet hic id nihil nisi nobis numquam, placeat ratione sunt voluptates.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores consectetur, consequuntur debitis dolorem ducimus ea eaque eius et eveniet hic id nihil nisi nobis numquam, placeat ratione sunt voluptates.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores consectetur, consequuntur debitis dolorem ducimus ea eaque eius et eveniet hic id nihil nisi nobis numquam, placeat ratione sunt voluptates.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores consectetur, consequuntur debitis dolorem ducimus ea eaque eius et eveniet hic id nihil nisi nobis numquam, placeat ratione sunt voluptates.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores consectetur, consequuntur debitis dolorem ducimus ea eaque eius et eveniet hic id nihil nisi nobis numquam, placeat ratione sunt voluptates.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi asperiores consectetur, consequuntur debitis dolorem ducimus ea eaque eius et eveniet hic id nihil nisi nobis numquam, placeat ratione sunt voluptates. </string>
+    <string name="image_description">Picture of a cute kitten</string>
+    <string name="title_text">Beautiful kitty</string>
 </resources>
