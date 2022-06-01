@@ -1,4 +1,4 @@
-package com.example.composeapplication.ui.design_patterns.builder
+package com.example.composeapplication.design_patterns.builder
 
 interface Engine {
 }
