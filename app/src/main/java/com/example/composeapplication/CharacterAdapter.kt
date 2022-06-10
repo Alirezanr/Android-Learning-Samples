@@ -29,11 +29,11 @@ class CharacterAdapter(
                 )
                 characterRoleTextview.text = String.format(
                     context.getString(R.string.role_placeholder),
-                    character.role?.capitalize() ?: "Unknown"
+                    character.house?.capitalize() ?: "Unknown"
                 )
                 orderOfThePhoenixTextview.text = String.format(
                     context.getString(R.string.orderOfThePhoenix_placeholder),
-                    character.orderOfThePhoenix
+                    character.wizard
                 )
 
                 characterInfoContainer.setOnClickListener {
