@@ -1,6 +1,7 @@
 package com.example.composeapplication
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -10,9 +11,27 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), SensorEventListener {
+class MainActivity : AppCompatActivity(), StepsCallback {
 
-    private var sensorManager: SensorManager? = null
+    private lateinit var txtSteps: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        txtSteps = findViewById(R.id.txt_step_count)
+        val intent = Intent(this, StepDetectorService::class.java)
+        startService(intent)
+
+        StepDetectorService.subscribe.register(this)
+    }
+
+    override fun subscribeSteps(steps: Int) {
+        txtSteps.text = steps.toString()
+        //TV_CALORIES.setText(GeneralHelper.getCalories(steps))
+        //TV_DISTANCE.setText(GeneralHelper.getDistanceCovered(steps))
+    }
+
+    /*private var sensorManager: SensorManager? = null
 
     private var running = false
     private var totalSteps = 0f
@@ -58,5 +77,5 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         //TODO("Not yet implemented")
-    }
+    }*/
 }
