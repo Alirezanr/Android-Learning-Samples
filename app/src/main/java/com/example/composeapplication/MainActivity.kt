@@ -66,10 +66,8 @@ fun DefaultPreviewDark() {
 
 @Composable
 fun MyApp() {
-    Greetings()
-    return
     var shouldShowOnboarding by remember { mutableStateOf(true) }
-    if (shouldShowOnboarding) {
+    return if (shouldShowOnboarding) {
         OnBoardingScreen {
             shouldShowOnboarding = false
         }
@@ -161,7 +159,7 @@ private fun Greeting(name: String) {
             delayMillis = 50
         )
     )
-*/
+    */
     Surface(
         color = MaterialTheme.colors.primary,
         modifier = Modifier.padding(
