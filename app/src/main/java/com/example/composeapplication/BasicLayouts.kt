@@ -1,9 +1,10 @@
 package com.example.composeapplication
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -51,11 +52,17 @@ fun SearchBar(modifier: Modifier = Modifier) {
         )
 }
 
+data class AlignYourBody(
+    val id: Int,
+    val text: String,
+    @DrawableRes val imageResource: Int,
+)
+
 @Composable
 fun AlignYourBodyElement(
     modifier: Modifier = Modifier,
-    @DrawableRes imageResource: Int = R.drawable.a,
-    @StringRes text: Int = R.string.lorem_ipsum
+    @DrawableRes imageResource: Int,
+    text: String
 ) {
     Column(
         modifier = modifier,
@@ -63,16 +70,15 @@ fun AlignYourBodyElement(
     ) {
         Image(
             modifier = modifier
-                .padding(top = 4.dp)
                 .size(88.dp)
                 .clip(CircleShape),
             contentScale = ContentScale.FillBounds,
             painter = painterResource(id = imageResource),
-            contentDescription = stringResource(text)
+            contentDescription = text
         )
 
         Text(
-            text = stringResource(text),
+            text = text,
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -88,6 +94,28 @@ fun AlignYourBodyElement(
     }
 }
 
+@Composable
+fun AlignYourBodyRow(
+    modifier: Modifier = Modifier,
+    alignYourBodyData: List<AlignYourBody>
+) {
+    LazyRow(
+        modifier = modifier
+            .fillMaxWidth(),
+        //space between items
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        //space in start and end of row
+        contentPadding = PaddingValues(horizontal = 16.dp)
+    ) {
+        items(alignYourBodyData) { item ->
+            AlignYourBodyElement(
+                modifier = modifier,
+                imageResource = item.imageResource,
+                text = item.text
+            )
+        }
+    }
+}
 
 @Composable
 fun FavoriteCollectionCard(
@@ -136,11 +164,46 @@ fun SearchBarPreview() {
 @Composable
 fun AlignYourBodyElementPreview() {
     ComposeApplicationTheme {
-        AlignYourBodyElement(modifier = Modifier.padding(horizontal = 4.dp))
+        AlignYourBodyElement(
+            imageResource = R.drawable.a,
+            text = stringResource(id = R.string.lorem_ipsum)
+        )
     }
 }
 
 @Preview()
+@Composable
+fun AlignYourBodyRowPreview() {
+    ComposeApplicationTheme {
+        AlignYourBodyRow(
+            alignYourBodyData = listOf(
+                AlignYourBody(
+                    id = 0,
+                    text = stringResource(id = R.string.show_less),
+                    imageResource = R.drawable.a
+                ),
+                AlignYourBody(
+                    id = 1,
+                    text = stringResource(id = R.string.show_more),
+                    imageResource = R.drawable.b
+                ),
+                AlignYourBody(
+                    id = 2,
+                    text = stringResource(id = R.string.show_less),
+                    imageResource = R.drawable.c
+                ),
+                AlignYourBody(
+                    id = 3,
+                    text = stringResource(id = R.string.show_more),
+                    imageResource = R.drawable.d
+                )
+            )
+        )
+    }
+}
+
+
+//@Preview()
 @Composable
 fun FavoriteCollectionCardPreview() {
     ComposeApplicationTheme {
