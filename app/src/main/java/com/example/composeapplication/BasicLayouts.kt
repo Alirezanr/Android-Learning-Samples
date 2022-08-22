@@ -16,13 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.composeapplication.ui.theme.Chartreuse
 import com.example.composeapplication.ui.theme.ComposeApplicationTheme
 
 @Composable
@@ -60,7 +58,7 @@ fun AlignYourBodyElement(
     @StringRes text: Int = R.string.lorem_ipsum
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 4.dp),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -91,6 +89,41 @@ fun AlignYourBodyElement(
 }
 
 
+@Composable
+fun FavoriteCollectionCard(
+    modifier: Modifier = Modifier,
+    title: String = stringResource(id = R.string.nature_meditations),
+    @DrawableRes image: Int = R.drawable.w
+) {
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        modifier = modifier
+            .width(192.dp)
+            .height(56.dp)
+            .padding(horizontal = 4.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                modifier = modifier.size(56.dp),
+                painter = painterResource(id = image),
+                contentDescription = title,
+                contentScale = ContentScale.Crop
+            )
+
+            Text(
+                modifier = modifier
+                    .padding(start = 8.dp),
+                text = title,
+                maxLines = 2,
+                style = MaterialTheme.typography.h3,
+                fontSize = 14.sp,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Start,
+            )
+        }
+    }
+}
+
 //@Preview()
 @Composable
 fun SearchBarPreview() {
@@ -103,6 +136,14 @@ fun SearchBarPreview() {
 @Composable
 fun AlignYourBodyElementPreview() {
     ComposeApplicationTheme {
-        AlignYourBodyElement()
+        AlignYourBodyElement(modifier = Modifier.padding(horizontal = 4.dp))
+    }
+}
+
+@Preview()
+@Composable
+fun FavoriteCollectionCardPreview() {
+    ComposeApplicationTheme {
+        FavoriteCollectionCard()
     }
 }
