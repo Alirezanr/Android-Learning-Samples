@@ -3,12 +3,16 @@ package com.example.composeapplication
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -35,16 +39,24 @@ data class DrawableStringPair(
 
 private val alignYourBodyData = listOf(
     R.drawable.a to R.string.ab1_inversions,
-    R.drawable.b to R.string.ab2_quick_yoga,
-    R.drawable.c to R.string.ab3_stretching,
-    R.drawable.d to R.string.ab4_tabata,
+    R.drawable.a to R.string.ab2_quick_yoga,
+    R.drawable.a to R.string.ab3_stretching,
+    R.drawable.a to R.string.ab4_tabata,
+    R.drawable.a to R.string.ab1_inversions,
+    R.drawable.a to R.string.ab2_quick_yoga,
+    R.drawable.a to R.string.ab3_stretching,
+    R.drawable.a to R.string.ab4_tabata,
 ).map { DrawableStringPair(it.first, it.second) }
 
 private val favoriteCollectionsData = listOf(
-    R.drawable.w to R.string.fc1_short_mantras,
-    R.drawable.x to R.string.fc2_nature_meditations,
-    R.drawable.y to R.string.fc3_stress_and_anxiety,
-    R.drawable.z to R.string.fc4_self_massage,
+    R.drawable.a to R.string.fc1_short_mantras,
+    R.drawable.a to R.string.fc2_nature_meditations,
+    R.drawable.a to R.string.fc3_stress_and_anxiety,
+    R.drawable.a to R.string.fc4_self_massage,
+    R.drawable.a to R.string.fc1_short_mantras,
+    R.drawable.a to R.string.fc2_nature_meditations,
+    R.drawable.a to R.string.fc3_stress_and_anxiety,
+    R.drawable.a to R.string.fc4_self_massage,
 ).map { DrawableStringPair(it.first, it.second) }
 
 
@@ -191,6 +203,51 @@ fun FavoriteCollectionGrid(
     }
 }
 
+@Composable
+fun HomeSection(
+    modifier: Modifier = Modifier,
+    title: String,
+    content: @Composable () -> Unit
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Text(
+            modifier = modifier
+                .padding(start = 8.dp)
+                .paddingFromBaseline(
+                    top = 40.dp,
+                    bottom = 10.dp,
+                ),
+            text = title.uppercase(),
+            fontSize = 16.sp,
+            style = MaterialTheme.typography.h2
+        )
+        content()
+    }
+}
+
+@Composable
+fun HomeScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(120.dp)
+            .scrollable(
+                state = rememberScrollState(),
+                orientation = Orientation.Vertical
+            )
+            .background(Color.LightGray)
+            .padding(vertical = 16.dp)
+    ) {
+        SearchBar(Modifier.padding(horizontal = 16.dp))
+        HomeSection(title = stringResource(id = R.string.align_your_body)) {
+            AlignYourBodyRow(alignYourBodyData = alignYourBodyData)
+        }
+        HomeSection(title = stringResource(id = R.string.favorite_collection)) {
+            FavoriteCollectionGrid(favoriteCollectionList = favoriteCollectionsData)
+        }
+    }
+}
+
 //@Preview()
 @Composable
 fun SearchBarPreview() {
@@ -227,7 +284,7 @@ fun FavoriteCollectionCardPreview() {
     ComposeApplicationTheme {
         FavoriteCollectionCard(
             title = stringResource(id = R.string.nature_meditations),
-            image = R.drawable.w
+            image = R.drawable.a
         )
     }
 }
@@ -239,5 +296,26 @@ fun FavoriteCollectionGridPreview() {
         FavoriteCollectionGrid(
             favoriteCollectionList = favoriteCollectionsData
         )
+    }
+}
+
+//@Preview()
+@Composable
+fun HomeSectionPreview() {
+    ComposeApplicationTheme {
+        HomeSection(
+            modifier = Modifier,
+            title = stringResource(id = R.string.align_your_body),
+        ) {
+            AlignYourBodyRow(alignYourBodyData = alignYourBodyData)
+        }
+    }
+}
+
+@Preview()
+@Composable
+fun HomeScreenPreview() {
+    ComposeApplicationTheme {
+        HomeScreen()
     }
 }
