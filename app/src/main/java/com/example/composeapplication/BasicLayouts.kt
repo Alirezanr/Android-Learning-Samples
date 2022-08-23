@@ -1,6 +1,7 @@
 package com.example.composeapplication
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,6 +27,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composeapplication.ui.theme.ComposeApplicationTheme
+
+data class DrawableStringPair(
+    @DrawableRes val drawable: Int,
+    @StringRes val text: Int
+)
+
+private val alignYourBodyData = listOf(
+    R.drawable.a to R.string.ab1_inversions,
+    R.drawable.b to R.string.ab2_quick_yoga,
+    R.drawable.c to R.string.ab3_stretching,
+    R.drawable.d to R.string.ab4_tabata,
+).map { DrawableStringPair(it.first, it.second) }
+
+private val favoriteCollectionsData = listOf(
+    R.drawable.w to R.string.fc1_short_mantras,
+    R.drawable.x to R.string.fc2_nature_meditations,
+    R.drawable.y to R.string.fc3_stress_and_anxiety,
+    R.drawable.z to R.string.fc4_self_massage,
+).map { DrawableStringPair(it.first, it.second) }
+
 
 @Composable
 fun SearchBar(modifier: Modifier = Modifier) {
@@ -54,18 +75,6 @@ fun SearchBar(modifier: Modifier = Modifier) {
 
         )
 }
-
-data class AlignYourBody(
-    val id: Int,
-    val text: String,
-    @DrawableRes val imageResource: Int,
-)
-
-data class Favorite(
-    val id: Int,
-    val text: String,
-    @DrawableRes val imageResource: Int,
-)
 
 @Composable
 fun AlignYourBodyElement(
@@ -106,7 +115,7 @@ fun AlignYourBodyElement(
 @Composable
 fun AlignYourBodyRow(
     modifier: Modifier = Modifier,
-    alignYourBodyData: List<AlignYourBody>
+    alignYourBodyData: List<DrawableStringPair>
 ) {
     LazyRow(
         modifier = modifier
@@ -119,8 +128,8 @@ fun AlignYourBodyRow(
         items(alignYourBodyData) { item ->
             AlignYourBodyElement(
                 modifier = modifier,
-                imageResource = item.imageResource,
-                text = item.text
+                imageResource = item.drawable,
+                text = stringResource(id = item.text)
             )
         }
     }
@@ -164,7 +173,7 @@ fun FavoriteCollectionCard(
 @Composable
 fun FavoriteCollectionGrid(
     modifier: Modifier = Modifier,
-    favoriteCollectionList: List<Favorite>
+    favoriteCollectionList: List<DrawableStringPair>
 ) {
     LazyHorizontalGrid(
         contentPadding = PaddingValues(horizontal = 16.dp),
@@ -175,8 +184,8 @@ fun FavoriteCollectionGrid(
     ) {
         items(favoriteCollectionList) { item ->
             FavoriteCollectionCard(
-                title = item.text,
-                image = item.imageResource
+                title = stringResource(id = item.text),
+                image = item.drawable
             )
         }
     }
@@ -206,28 +215,7 @@ fun AlignYourBodyElementPreview() {
 fun AlignYourBodyRowPreview() {
     ComposeApplicationTheme {
         AlignYourBodyRow(
-            alignYourBodyData = listOf(
-                AlignYourBody(
-                    id = 0,
-                    text = stringResource(id = R.string.show_less),
-                    imageResource = R.drawable.a
-                ),
-                AlignYourBody(
-                    id = 1,
-                    text = stringResource(id = R.string.show_more),
-                    imageResource = R.drawable.b
-                ),
-                AlignYourBody(
-                    id = 2,
-                    text = stringResource(id = R.string.show_less),
-                    imageResource = R.drawable.c
-                ),
-                AlignYourBody(
-                    id = 3,
-                    text = stringResource(id = R.string.show_more),
-                    imageResource = R.drawable.d
-                )
-            )
+            alignYourBodyData = alignYourBodyData
         )
     }
 }
@@ -244,33 +232,12 @@ fun FavoriteCollectionCardPreview() {
     }
 }
 
-@Preview()
+//@Preview()
 @Composable
 fun FavoriteCollectionGridPreview() {
     ComposeApplicationTheme {
         FavoriteCollectionGrid(
-            favoriteCollectionList = listOf(
-                Favorite(
-                    id = 0,
-                    text = stringResource(id = R.string.show_less),
-                    imageResource = R.drawable.w
-                ),
-                Favorite(
-                    id = 1,
-                    text = stringResource(id = R.string.show_more),
-                    imageResource = R.drawable.x
-                ),
-                Favorite(
-                    id = 2,
-                    text = stringResource(id = R.string.show_less),
-                    imageResource = R.drawable.y
-                ),
-                Favorite(
-                    id = 3,
-                    text = stringResource(id = R.string.show_more),
-                    imageResource = R.drawable.z
-                )
-            )
+            favoriteCollectionList = favoriteCollectionsData
         )
     }
 }
