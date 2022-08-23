@@ -4,6 +4,9 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -53,6 +56,12 @@ fun SearchBar(modifier: Modifier = Modifier) {
 }
 
 data class AlignYourBody(
+    val id: Int,
+    val text: String,
+    @DrawableRes val imageResource: Int,
+)
+
+data class Favorite(
     val id: Int,
     val text: String,
     @DrawableRes val imageResource: Int,
@@ -120,8 +129,8 @@ fun AlignYourBodyRow(
 @Composable
 fun FavoriteCollectionCard(
     modifier: Modifier = Modifier,
-    title: String = stringResource(id = R.string.nature_meditations),
-    @DrawableRes image: Int = R.drawable.w
+    title: String,
+    @DrawableRes image: Int
 ) {
     Surface(
         shape = MaterialTheme.shapes.small,
@@ -152,6 +161,27 @@ fun FavoriteCollectionCard(
     }
 }
 
+@Composable
+fun FavoriteCollectionGrid(
+    modifier: Modifier = Modifier,
+    favoriteCollectionList: List<Favorite>
+) {
+    LazyHorizontalGrid(
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        modifier = modifier.height(120.dp),
+        rows = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(favoriteCollectionList) { item ->
+            FavoriteCollectionCard(
+                title = item.text,
+                image = item.imageResource
+            )
+        }
+    }
+}
+
 //@Preview()
 @Composable
 fun SearchBarPreview() {
@@ -171,7 +201,7 @@ fun AlignYourBodyElementPreview() {
     }
 }
 
-@Preview()
+//@Preview()
 @Composable
 fun AlignYourBodyRowPreview() {
     ComposeApplicationTheme {
@@ -207,6 +237,40 @@ fun AlignYourBodyRowPreview() {
 @Composable
 fun FavoriteCollectionCardPreview() {
     ComposeApplicationTheme {
-        FavoriteCollectionCard()
+        FavoriteCollectionCard(
+            title = stringResource(id = R.string.nature_meditations),
+            image = R.drawable.w
+        )
+    }
+}
+
+@Preview()
+@Composable
+fun FavoriteCollectionGridPreview() {
+    ComposeApplicationTheme {
+        FavoriteCollectionGrid(
+            favoriteCollectionList = listOf(
+                Favorite(
+                    id = 0,
+                    text = stringResource(id = R.string.show_less),
+                    imageResource = R.drawable.w
+                ),
+                Favorite(
+                    id = 1,
+                    text = stringResource(id = R.string.show_more),
+                    imageResource = R.drawable.x
+                ),
+                Favorite(
+                    id = 2,
+                    text = stringResource(id = R.string.show_less),
+                    imageResource = R.drawable.y
+                ),
+                Favorite(
+                    id = 3,
+                    text = stringResource(id = R.string.show_more),
+                    imageResource = R.drawable.z
+                )
+            )
+        )
     }
 }
