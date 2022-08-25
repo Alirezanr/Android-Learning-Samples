@@ -228,7 +228,7 @@ fun HomeSection(
 }
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -281,6 +281,16 @@ fun AppBottomNavigation(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun MyApplication() {
+    Scaffold(
+        bottomBar = {
+            AppBottomNavigation()
+        }
+    ) { padding ->
+        HomeScreen(modifier = Modifier.padding(padding))
+    }
+}
 
 //@Preview()
 @Composable
@@ -354,10 +364,18 @@ fun HomeScreenPreview() {
     }
 }
 
-@Preview()
+//@Preview()
 @Composable
 fun AppBottomNavigationPreview() {
     ComposeApplicationTheme {
         AppBottomNavigation()
+    }
+}
+
+@Preview()
+@Composable
+fun MyApplicationPreview() {
+    ComposeApplicationTheme {
+        MyApplication()
     }
 }
