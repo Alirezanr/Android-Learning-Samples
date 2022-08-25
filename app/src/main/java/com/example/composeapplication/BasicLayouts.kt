@@ -16,7 +16,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Spa
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -229,15 +231,15 @@ fun HomeSection(
 fun HomeScreen() {
     Column(
         modifier = Modifier
+            .fillMaxHeight()
             .fillMaxWidth()
-            .height(120.dp)
             .scrollable(
                 state = rememberScrollState(),
                 orientation = Orientation.Vertical
             )
             .background(Color.LightGray)
-            .padding(vertical = 16.dp)
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
         SearchBar(Modifier.padding(horizontal = 16.dp))
         HomeSection(title = stringResource(id = R.string.align_your_body)) {
             AlignYourBodyRow(alignYourBodyData = alignYourBodyData)
@@ -247,6 +249,38 @@ fun HomeScreen() {
         }
     }
 }
+
+
+@Composable
+fun AppBottomNavigation(modifier: Modifier = Modifier) {
+    BottomNavigation(
+        modifier = modifier,
+        backgroundColor = Color.LightGray,
+        contentColor = Color.Gray,
+    ) {
+        BottomNavigationItem(
+            selected = true,
+            onClick = { /*TODO*/ },
+            icon = {
+                Icon(Icons.Default.Spa, contentDescription = null)
+            },
+            label = {
+                Text(text = "First")
+            }
+        )
+        BottomNavigationItem(
+            selected = false,
+            onClick = { /*TODO*/ },
+            icon = {
+                Icon(Icons.Default.AccountCircle, contentDescription = null)
+            },
+            label = {
+                Text(text = "Second")
+            }
+        )
+    }
+}
+
 
 //@Preview()
 @Composable
@@ -312,10 +346,18 @@ fun HomeSectionPreview() {
     }
 }
 
-@Preview()
+//@Preview()
 @Composable
 fun HomeScreenPreview() {
     ComposeApplicationTheme {
         HomeScreen()
+    }
+}
+
+@Preview()
+@Composable
+fun AppBottomNavigationPreview() {
+    ComposeApplicationTheme {
+        AppBottomNavigation()
     }
 }
