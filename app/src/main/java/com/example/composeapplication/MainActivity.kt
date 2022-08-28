@@ -3,7 +3,6 @@ package com.example.composeapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
@@ -21,18 +20,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.composeapplication.ui.theme.ComposeApplicationTheme
+import com.example.composeapplication.ui.Home
 
 class MainActivity : ComponentActivity() {
-    val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeApplicationTheme {
-
-                WellnessScreen(
-                    viewModel = viewModel
-                )
+            Surface {
+                Home()
             }
         }
     }
