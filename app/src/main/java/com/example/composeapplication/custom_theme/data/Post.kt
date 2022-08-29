@@ -1,4 +1,4 @@
-package com.example.composeapplication.data
+package com.example.composeapplication.custom_theme.data
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable

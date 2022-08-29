@@ -1,8 +1,9 @@
-package com.example.composeapplication.ui
+package com.example.composeapplication.custom_theme
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,16 +36,17 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.composeapplication.data.Post
-import com.example.composeapplication.data.PostRepo
+import com.example.composeapplication.custom_theme.data.Post
+import com.example.composeapplication.custom_theme.data.PostRepo
 import com.example.composeapplication.R
+import com.example.composeapplication.custom_theme.ui.JetnewsTheme
 import java.util.Locale
 
 @Composable
-fun Home() {
+fun Home(darkThemeEnabled: Boolean = isSystemInDarkTheme()) {
     val featured = remember { PostRepo.getFeaturedPost() }
     val posts = remember { PostRepo.getPosts() }
-    MaterialTheme {
+    JetnewsTheme(darkTheme = darkThemeEnabled) {
         Scaffold(
             topBar = { AppBar() }
         ) { innerPadding ->
@@ -188,7 +190,7 @@ fun PostItem(
     )
 }
 
-@Preview("Post Item")
+//@Preview("Post Item")
 @Composable
 private fun PostItemPreview() {
     val post = remember { PostRepo.getFeaturedPost() }
@@ -197,7 +199,7 @@ private fun PostItemPreview() {
     }
 }
 
-@Preview("Featured Post")
+//@Preview("Featured Post")
 @Composable
 private fun FeaturedPostPreview() {
     val post = remember { PostRepo.getFeaturedPost() }
@@ -208,4 +210,11 @@ private fun FeaturedPostPreview() {
 @Composable
 private fun HomePreview() {
     Home()
+}
+
+
+@Preview("Home, Dark")
+@Composable
+private fun HomeDarkPreview() {
+    Home(darkThemeEnabled = true)
 }
