@@ -24,4 +24,27 @@ modify before you write the actual code.
 
 False positive:
 This happens when you have a test that is passing but really shouldn't be.
+
+
+Unit tests :
+Unit tests are the quickest, easiest to write and cheapest to run. They generally test
+one outcome of one method at a time. They are independent of the Android framework.
+
+
+Robolectric:
+Simulates the Android runtime, it allows you to test code that depends
+on the framework without using a device or emulator.
+
+
+Integration tests:
+It tests how things work together.
+
+UI tests:
+The tests on this layer check if the UI of your application works correctly.
+
+UI Automator:
+Google recommends it only when you have to do cross-app functional UI testing
+across system and installed apps.
+
+
  */
