@@ -51,5 +51,61 @@ UI Automator:
 Google recommends it only when you have to do cross-app functional UI testing
 across system and installed apps.
 
+Design patterns:
+creational, structural and behavioral
+
+Creational:
+describe solutions related to object creation.
+
+    -Singleton: specifies that only one instance of a certain class may exist.
+        Usually, it’s possible to access the singleton globally.
+
+    -Builder: abstracts the construction of a complex object, joining several parts.
+              avoid an anti-pattern known as a Telescoping Constructor.
+              A Telescoping Constructor consists of a constructor with many parameters where
+              some of them are optional. This is not an issue with Kotlin where you can have
+              default and named parameters.
+
+    -Dependency Injection: This design pattern is crucial to having a testable architecture.
+              It favors testability because you can inject fake objects to test different situations.
+
+
+Structural:
+They ease the design to establish relationships between objects.
+
+    -Adapter (or Wrapper): describes how to let two incompatible classes work together.
+              example: adapting a list to show it in ui using recyclerview adapter.
+
+    -Facade : defines a high-level interface object which hides the complexity of underlying objects.
+              Client objects prefer using the facade instead of the internal objects because
+              the facade provides a cleaner, easier-to-use interface.
+
+
+    -Composite: The intent of the Composite design pattern is to construct complex objects
+                composed of individual parts, and to treat the individual parts and the composition
+                uniformly.
+
+Behavioral:
+explains how objects interact and how a task can be divided into sub-tasks among different objects.
+behavioral patterns describe a dynamic flow.
+
+    -Observer: gives us a way to communicate between objects where one object informs
+               others about changes or actions.
+
+
+    -Command: describes the encapsulation of an operation without knowing the real content
+              of the operation or the receiver.
+
+
+(UI)Architectural:
+Describes ways to structure and organize your code.
+Use them to achieve a robust, stable, testable, modular and easy to extend codebase.
+
+    -MVC: states that each class you write should be part of one of the following layers:
+          Model, View, Controller.
+
+    -MVP: Model-View-Presenter
+
+    -MVVM: Model-View-ViewModel
 
  */
