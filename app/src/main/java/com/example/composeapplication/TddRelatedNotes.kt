@@ -108,4 +108,44 @@ Use them to achieve a robust, stable, testable, modular and easy to extend codeb
 
     -MVVM: Model-View-ViewModel
 
+
+S.O.L.I.D:
+    Single responsibility: Each class should have a unique objective or should be useful for a specific case.
+
+    Open-closed:
+        The software entities of your app (classes, methods, etc) should be open for extension
+         but closed for modification. This means that you should design them in such a way
+         that adding new features or modifying behavior shouldn't require you to modify too
+         much of your existing code but instead add new code or create new classes
+
+    Liskov substitution:
+        states that an app that uses an object of a base class should be able to use objects of derived classes
+          without knowing about that and continue working. Therefore, your code should not
+          be checking the subtype. In the subclass you can override some of the parent
+          methods as long as you continue to comply with its semantics and maintain the
+          expected behavior. As you can see, if you respect the contract, the app should
+          continue to work. a good example is when we inherit Square class from Rectangle class.
+          In your tests created using TDD, everything that you verified for your base class
+          should also be verified for your new child class.
+
+    Interface segregation:
+        This principle encourages you to create fine grained interfaces that are client
+         specific. Suppose you have a class with a few methods, one part of your app may only
+         need to access a subset of your methods and other part may need to access another
+         subset. This principle encourages you to create two interfaces. Clients should have
+         access to only what they need and nothing more.When writing tests using TDD,
+         if your class under test has a dependency, it’s easier if you have to stub just
+         the methods of a fine grained interface. TDD enforces writing
+         more client-focused interfaces, because it makes you think from the client
+         perspective — you avoid exposing those methods that won’t be used by the client.
+
+    Dependency inversion
+        A concrete class A should not depend on a concrete class B, but an abstraction of B instead.
+        This abstraction could be an interface or an abstract class.
+        When writing tests using TDD, instead of passing real collaborators (dependencies)
+        to a class under test, it’s easier to pass fake objects that conform to the same
+        interface. These fake objects could be forced to always behave the same to reproduce
+        a specific scenario to test.
+
+
  */
