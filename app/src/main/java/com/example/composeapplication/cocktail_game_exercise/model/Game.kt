@@ -1,30 +1,22 @@
 package com.example.composeapplication.cocktail_game_exercise.model
 
 class Game(
-    val questions: List<Question> = emptyList(),
-    highScore: Int = 0
+    private val questions: List<Question>,
+    val score: Score = Score(0)
 ) {
-    var currentScore = 0
-        private set
-    var highScore = highScore
-        private set
 
     var lastReturnedQuestionIndex = -1
 
-    fun incrementScore() {
-        currentScore++
-        if (currentScore > highScore) {
-            highScore++
+    fun nextQuestion(): Question? {
+        if (lastReturnedQuestionIndex + 1 < questions.size) {
+            lastReturnedQuestionIndex++
+            return questions[lastReturnedQuestionIndex]
         }
+        return null
     }
 
-    fun nextQuestion(): Question? {
-        lastReturnedQuestionIndex++
-
-        if (lastReturnedQuestionIndex >= questions.size)
-            return null
-
-        val nextQuestion = questions[lastReturnedQuestionIndex]
-        return nextQuestion
+    fun answer(question: Question, option: String) {
+        if (question.answer(option))
+            score.incrementScore()
     }
 }

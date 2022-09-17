@@ -148,4 +148,23 @@ S.O.L.I.D:
         a specific scenario to test.
 
 
+
+
+state verification or black-box testing: verify the result by checking the state of the object under test(with JUnit).
+Mocking, behavior verification or white-box testing: ensure that your object under test will call specific collaborator methods.
+
+Mocking final classes/methods:
+-Use a mock-maker-inline extension to allow Mockito mock final classes/methods.
+-Add the open keyword to classes and methods that you’ll mock.
+-Create an interface and have the class implement the interface.
+    Then, just mock the interface (interfaces are open by default).
+
+Use a mock-maker-inline to mock final classes/methods:
+• Go to the project window and change to the Project view.
+• Create a resources directory under app -> src -> test.
+• Inside resources, create a directory called mockito-extensions.
+• Add a text file called org.mockito.plugins.MockMaker.
+• Add the text mock-maker-inline
+
+
  */

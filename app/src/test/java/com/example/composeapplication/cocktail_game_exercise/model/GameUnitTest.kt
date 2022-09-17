@@ -4,6 +4,8 @@ import org.junit.Assert.*
 
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.kotlin.*
 
 class GameUnitTest {
 
@@ -22,25 +24,6 @@ class GameUnitTest {
     }
 
     @Test
-    fun whenIncrementingScore_shouldIncrementCurrentScore() {
-        game.incrementScore()
-        assertEquals("Current score should have been 1", 1, game.currentScore)
-    }
-
-    @Test
-    fun whenIncrementingScore_belowHighScore_shouldNotIncrementHighScore() {
-        val game = Game(highScore = 10)
-        game.incrementScore()
-        assertEquals("High score should have been 10", 10, game.highScore)
-    }
-
-    @Test
-    fun whenIncrementingScore_shouldIncrementHighScore() {
-        game.incrementScore()
-        assertEquals("Current score should have been 1", 1, game.currentScore)
-    }
-
-    @Test
     fun whenReachingToEndOFQuestionsList_returnNull() {
         for (i in questions.indices) {
             game.nextQuestion()
@@ -51,7 +34,43 @@ class GameUnitTest {
     @Test
     fun whenGettingNextQuestion_shouldReturnIt() {
         val returnedQuestion = game.nextQuestion()
-        val expectedQuestion = game.questions.first()
+        val expectedQuestion = questions.first()
         assertEquals(expectedQuestion, returnedQuestion)
+    }
+
+    @Test
+    fun whenAnswering_shouldDelegateToQuestion() {
+        // mock an object of Question class.
+        val question = mock<Question>()
+        // pass question object to Game constructor.
+        val game = Game(listOf(question))
+        // call answer method in Game class.
+        game.answer(question, "OPTION")
+        // verify that answer method of question object has called with "OPTION" argument.
+        verify(question/*, times(1)*/).answer(eq("OPTION"))
+    }
+
+    @Test
+    fun whenAnsweringCorrectly_shouldIncrementScore() {
+        val question = mock<Question>()
+        whenever(question.answer(anyString())).thenReturn(true)
+        val score = mock<Score>()
+        val game = Game(listOf(question), score)
+
+        game.answer(question, "OPTION")
+
+        verify(score, times(1)).incrementScore()
+    }
+
+
+    @Test
+    fun whenAnsweringIncorrectly_shouldNotIncrementScore() {
+        val question = mock<Question>()
+        whenever(question.answer(anyString())).thenReturn(false)
+
+        val score = mock<Score>()
+        val game = Game(listOf(question))
+        game.answer(question, "OPTION")
+        verify(score, never()).incrementScore()
     }
 }
