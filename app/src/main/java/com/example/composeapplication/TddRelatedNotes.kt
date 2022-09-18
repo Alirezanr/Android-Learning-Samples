@@ -167,4 +167,7 @@ Use a mock-maker-inline to mock final classes/methods:
 • Add the text mock-maker-inline
 
 
+Spy: Using a spy will let you call the methods of a real object, while also tracking every
+     interaction, just as you would do with a mock. When setting up spies, you need to use
+     doReturn/whenever/method to stub a method.
  */
