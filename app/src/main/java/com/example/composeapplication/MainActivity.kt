@@ -4,12 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.composeapplication.ui.LocalSpacing
+import com.example.composeapplication.ui.spacing
 import com.example.composeapplication.ui.theme.ComposeApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,7 +34,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+    //How to use spacing:
+    val spacing = MaterialTheme.spacing
+    Text(
+        text = "Hello $name!",
+        modifier = Modifier.padding(
+            horizontal = spacing.medium,
+            vertical = spacing.small
+        )
+    )
 }
 
 @Preview(showBackground = true)
