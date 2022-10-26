@@ -36,8 +36,12 @@ fun Greeting(name: String) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    ComposeApplicationTheme {
-        Greeting("Android")
-    }
-}
+fun DefaultPreview() { ComposeApplicationTheme { Greeting("Android") } }
+
+/**
+ * KTLint notes:
+ * access to errors through this location: app/build/reports/ktlint.
+ * Run "./gradlew ktlintCheck" to check for ktlint errors in project.
+ * Run "./gradlew ktlintFormat" to format project with ktlint rules.
+ *
+ */
