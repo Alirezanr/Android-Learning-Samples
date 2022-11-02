@@ -4,14 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.composeapplication.ui.theme.ComposeApplicationTheme
@@ -29,23 +32,24 @@ class MainActivity : ComponentActivity() {
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
-
-                        val modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp)
-                            .padding(bottom = 14.dp)
-
                         var isVisible by remember {
+                            mutableStateOf(false)
+                        }
+
+                        var isRound by remember {
                             mutableStateOf(false)
                         }
 
                         Button(onClick = {
                             isVisible = !isVisible
+                            isRound = !isRound
                         }) {
                             Text(text = "Toggle")
                         }
 
-                        AnimateVisibility(isVisible, modifier)
+                        AnimateVisibility(isVisible)
+                        Spacer(modifier = Modifier.height(10.dp))
+                        AnimateByInteger(isRound)
 
                     }
 
@@ -57,21 +61,58 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AnimateVisibility(
-    isVisible: Boolean,
-    modifier: Modifier
+    isVisible: Boolean
 ) {
-    //Wrapper composable to animate the visibility changes for our composable.
-    AnimatedVisibility(
-        visible = isVisible,
-        //The animation when composable becomes visible:
-        enter = slideInHorizontally() + fadeIn(),
-        //The animation when composable becomes invisible:
-        exit = slideOutHorizontally() + fadeOut(),
-        modifier = modifier
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
     ) {
-        Box(
+        //Wrapper composable to animate the visibility changes for our composable.
+        AnimatedVisibility(
+            visible = isVisible,
+            //The animation when composable becomes visible:
+            enter = slideInHorizontally() + fadeIn(),
+            //The animation when composable becomes invisible:
+            exit = slideOutHorizontally() + fadeOut(),
             modifier = Modifier
-                .background(Color.Red)
+                .fillMaxSize()
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(Color.Red)
+            )
+        }
+    }
+}
+
+@Composable
+fun AnimateByInteger(
+    isRound: Boolean
+) {
+    val borderRadius by animateIntAsState(
+        //After half a second animation starts and takes 3 seconds to finish.
+        targetValue = if (isRound) 100 else 0,
+        animationSpec = tween(
+            durationMillis = 3000,
+            delayMillis = 500,
         )
+
+        /*
+        //Animate composable with a bouncy animation
+        targetValue = if (isRound) 40 else 20,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioHighBouncy,
+            stiffness = Spring.StiffnessVeryLow
+        )*/
+    )
+
+    Box(
+        modifier = Modifier
+            .size(200.dp)
+            .clip(RoundedCornerShape(borderRadius))
+            .background(Color.Green)
+    ) {
+
     }
 }
