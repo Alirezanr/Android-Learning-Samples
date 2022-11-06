@@ -1,16 +1,16 @@
 package com.example.composeapplication
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.composeapplication.ui.theme.ComposeApplicationTheme
 
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
 
                     ) {
                         var isVisible by remember {
@@ -52,13 +55,19 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text(text = "Toggle")
                         }
-                        AnimateVisibility(isVisible)
+                        Row {
+                            AnimateContentSize(isVisible)
+                            Spacer(modifier = Modifier.width(10.dp))
+                        }
+
                         Spacer(modifier = Modifier.height(10.dp))
+                        AnimateVisibility(isVisible)
                         Row {
                             AnimateMultipleValues(isRound)
                             Spacer(modifier = Modifier.width(10.dp))
                             AnimateByInteger(isRound)
                         }
+                        Spacer(modifier = Modifier.height(10.dp))
                         Row {
                             InfiniteAnimation()
                             Spacer(modifier = Modifier.width(10.dp))
@@ -215,5 +224,27 @@ fun AnimateContents(
 
             slideInHorizontally { if (isVisible) -it else it } with slideOutHorizontally { if (isVisible) it else -it }
         },
+    )
+}
+
+@Composable
+fun AnimateContentSize(
+    isVisible: Boolean
+) {
+    val descriptionText = stringResource(id = R.string.lorem_ipsum)
+    val context = LocalContext.current.applicationContext
+    Text(
+        text = descriptionText,
+        maxLines = if (isVisible) 10 else 1,
+        modifier = Modifier
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow
+                ),
+                finishedListener = { _, i ->
+                    Toast.makeText(context, "Some toast", Toast.LENGTH_SHORT).show()
+                }
+            )
     )
 }

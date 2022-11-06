@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ComposeApplication</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque dolor doloremque enim libero qui voluptas. Atque dicta dolorem, eligendi explicabo id illum ipsa molestias neque nostrum, numquam quaerat sapiente voluptatibus.\n
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque dolor doloremque enim libero qui voluptas. Atque dicta dolorem, eligendi explicabo id illum ipsa molestias neque nostrum, numquam quaerat sapiente voluptatibus.\n
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque dolor doloremque enim libero qui voluptas. Atque dicta dolorem, eligendi explicabo id illum ipsa molestias neque nostrum, numquam quaerat sapiente voluptatibus.\n
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque dolor doloremque enim libero qui voluptas. Atque dicta dolorem, eligendi explicabo id illum ipsa molestias neque nostrum, numquam quaerat sapiente voluptatibus.\n
+    </string>
 </resources>
