@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,10 +52,11 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text(text = "Toggle")
                         }
-                        Row {
-                            AnimateContentSize(isVisible)
-                            Spacer(modifier = Modifier.width(10.dp))
-                        }
+
+                        AnimateFloatAsState(isVisible)
+                        Spacer(modifier = Modifier.height(10.dp))
+                        AnimateContentSize(isVisible)
+
 
                         Spacer(modifier = Modifier.height(10.dp))
                         AnimateVisibility(isVisible)
@@ -246,5 +244,22 @@ fun AnimateContentSize(
                     Toast.makeText(context, "Some toast", Toast.LENGTH_SHORT).show()
                 }
             )
+    )
+}
+
+@Composable
+fun AnimateFloatAsState(
+    isVisible: Boolean
+) {
+    val progress by animateFloatAsState(
+        targetValue = if (isVisible) 0.75f else 0.25f,
+        animationSpec = tween(500)
+    )
+
+    LinearProgressIndicator(
+        progress = progress,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
     )
 }
