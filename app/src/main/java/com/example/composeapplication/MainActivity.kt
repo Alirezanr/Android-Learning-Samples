@@ -6,7 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -30,7 +33,9 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
+
                     ) {
                         var isVisible by remember {
                             mutableStateOf(false)
@@ -46,10 +51,19 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text(text = "Toggle")
                         }
-
                         AnimateVisibility(isVisible)
                         Spacer(modifier = Modifier.height(10.dp))
-                        AnimateByInteger(isRound)
+                        Row {
+                            AnimateMultipleValues(isRound)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            AnimateByInteger(isRound)
+                        }
+                        Row {
+                            InfiniteAnimation()
+                            Spacer(modifier = Modifier.width(10.dp))
+
+                        }
+
 
                     }
 
@@ -115,4 +129,52 @@ fun AnimateByInteger(
     ) {
 
     }
+}
+
+@Composable
+fun AnimateMultipleValues(
+    isRound: Boolean
+) {
+    val transition = updateTransition(targetState = isRound, label = null)
+    val borderRadius by transition.animateInt(
+        transitionSpec = { tween(1000) },
+        label = "",
+        targetValueByState = { isRound ->
+            if (isRound) 100 else 0
+        }
+    )
+    val color by transition.animateColor(
+        transitionSpec = { tween(1000) },
+        label = "",
+        targetValueByState = { isRound ->
+            if (isRound) Color.Red else Color.Green
+        }
+    )
+
+    Box(
+        modifier = Modifier
+            .size(200.dp)
+            .clip(RoundedCornerShape(borderRadius))
+            .background(color)
+    )
+}
+
+
+@Composable
+fun InfiniteAnimation() {
+    val transition = rememberInfiniteTransition()
+    val color by transition.animateColor(
+        initialValue = Color.Red,
+        targetValue = Color.Green,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    Box(
+        modifier = Modifier
+            .size(200.dp)
+            .background(color)
+    )
 }
