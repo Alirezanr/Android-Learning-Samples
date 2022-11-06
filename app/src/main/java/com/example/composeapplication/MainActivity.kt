@@ -16,6 +16,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -61,7 +62,7 @@ class MainActivity : ComponentActivity() {
                         Row {
                             InfiniteAnimation()
                             Spacer(modifier = Modifier.width(10.dp))
-
+                            AnimateContents(isVisible)
                         }
 
 
@@ -176,5 +177,43 @@ fun InfiniteAnimation() {
         modifier = Modifier
             .size(200.dp)
             .background(color)
+    )
+}
+
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun AnimateContents(
+    isVisible: Boolean
+) {
+    AnimatedContent(
+        targetState = isVisible,
+        modifier = Modifier.size(200.dp),
+        content = { visible ->
+            if (visible)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Green),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Second screen")
+                }
+            else
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Red),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "First screen")
+                }
+        },
+        transitionSpec = {
+            // A simple fade animation to change content
+            //fadeIn(animationSpec = tween(1000)) with fadeOut(animationSpec = tween(1000))
+
+            slideInHorizontally { if (isVisible) -it else it } with slideOutHorizontally { if (isVisible) it else -it }
+        },
     )
 }
