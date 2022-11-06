@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -180,9 +181,22 @@ fun InfiniteAnimation() {
         )
     )
 
+    val rotationAnimation = transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 10000,
+                easing = LinearEasing
+            )
+        )
+    )
+
     Box(
         modifier = Modifier
             .size(200.dp)
+            .rotate(rotationAnimation.value)
+            .padding(32.dp)
             .background(color)
     )
 }
