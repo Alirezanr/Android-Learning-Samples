@@ -1,5 +1,7 @@
 package com.example.composeapplication.design_patterns.singleton
 
+import com.example.composeapplication.design_patterns.factory.OutfitFactory
+
 class SingletonSampleRunner {
     fun runSample() {
         val shoppingCardJava = ShoppingCardJava.getInstance()
@@ -10,8 +12,10 @@ class SingletonSampleRunner {
         }
 
         val shoppingCardKotlin = ShoppingCardKotlin.apply {
-            addItem("Shirt")
-            addItem("Shows")
+            val summerOutfit = OutfitFactory.getSummerOutfit()
+            val sportOutfit = OutfitFactory.getSportOutfit()
+            ShoppingCardKotlin.addItem(summerOutfit)
+            ShoppingCardKotlin.addItem(sportOutfit)
             getItems().forEach {
                 println(it)
             }
