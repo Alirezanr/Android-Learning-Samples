@@ -1,0 +1,88 @@
+{
+  ConstraintSets: {
+    //start constraints of animation (how views look like in the start of animation).
+    start: {
+      profile_pic: {
+        width: 40,
+        height: 40,
+        //constraint start of profile picture to start of parent with 16 dp padding.
+        start: ['parent', 'start', 16],
+        top: ['parent', 'top', 16],
+        custom: {
+          //we can get this property using motionProperties(id = "profile_pic").value.color("background") in MotionLayout composable.
+          background : '#FF3700B3'
+        }
+      },
+      username: {
+        top: ['profile_pic', 'top'],
+        bottom: ['profile_pic', 'bottom'],
+        start: ['profile_pic', 'end', 16],
+      },
+      box: {
+        //fill constraint(like 0dp in xml constraint layout)
+        width: 'spread',
+        height: 'spread',
+        top: ['parent', 'top'],
+        bottom: ['parent', 'bottom',-16],
+        start: ['parent', 'start'],
+        end: ['parent', 'end']
+      }
+    },
+
+    //end constraints of animation (how views look like in the end of animation).
+    end: {
+      profile_pic: {
+        width: 150,
+        height: 150,
+        //constraint start of profile picture to start of parent with 16 dp padding.
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent', 'top', 16],
+        custom: {
+          //we can get this property using motionProperties(id = "background") in MotionLayout composable.
+          background : '#FFBB86FC'
+        }
+      },
+      username: {
+        top: ['profile_pic', 'bottom',16],
+        bottom: ['parent', 'bottom'],
+        start: ['parent', 'start', 16],
+        end: ['parent', 'end', 16],
+      },
+      box: {
+        //fill constraint(like 0dp in xml constraint layout)
+        width: 'spread',
+        height: 'spread',
+        top: ['parent', 'top'],
+        bottom: ['parent', 'bottom',-16],
+        start: ['parent', 'start'],
+        end: ['parent', 'end']
+      }
+    }
+  },
+  //Define how to animate views:
+  Transitions: {
+    default: {
+      from : 'start',
+      to: 'end',
+      pathMotionArc: 'startHorizontal',
+      //In which portion of our transition we want which values to animate to what
+      KeyFrames: {
+          KeyAttributes: [
+            {
+              target: ['profile_pic'],
+              frames: [0, 100]
+            },
+            {
+              target: ['username'],
+              //divide transition to 3 portion.
+              //in portion of 50 percent, move username composable 100 percent to the right(horizontal)
+              frames: [0, 50, 100],
+              translationX: [0, 100, 0],
+              //rotationZ: [0, 180, 360]
+            },
+          ]
+      }
+    }
+  }
+}
