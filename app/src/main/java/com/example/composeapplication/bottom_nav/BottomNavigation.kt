@@ -1,11 +1,24 @@
 package com.example.composeapplication.bottom_nav
 
-import androidx.compose.material.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -21,19 +34,44 @@ fun CustomBottomNavigation(navController: NavController) {
     )
 
     BottomNavigation(
-        backgroundColor = colorResource(id = R.color.teal_200),
-        contentColor = Color.Black
+        modifier = Modifier
+            .padding(16.dp)
+            .clip(CircleShape),
+        backgroundColor = colorResource(id = R.color.purple_500)
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
         bottomNavItems.forEach { item ->
+            val isSelectedItem = item.screenRoute == currentRoute
+
             BottomNavigationItem(
                 icon = {
-                    Icon(imageVector = item.icon, contentDescription = item.title)
-                },
-                label = {
-                    Text(text = item.title, fontSize = 9.sp)
+                    Column(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .fillMaxSize()
+                            .background(if (isSelectedItem) colorResource(id = R.color.purple_200) else Color.Transparent),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = item.title,
+                            tint = if (isSelectedItem) colorResource(id = R.color.purple_700)
+                            else Color.Black.copy(alpha = 0.4f)
+                        )
+
+                        AnimatedVisibility(
+                            visible = isSelectedItem
+                        ) {
+                            Text(
+                                text = item.title,
+                                fontSize = 11.sp,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    }
                 },
                 selectedContentColor = Color.Black,
                 unselectedContentColor = Color.Black.copy(0.4f),
@@ -46,7 +84,6 @@ fun CustomBottomNavigation(navController: NavController) {
                                 saveState = true
                             }
                         }
-
                         launchSingleTop = true
                         restoreState = true
                     }
