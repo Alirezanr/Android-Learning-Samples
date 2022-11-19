@@ -2,11 +2,9 @@ package com.example.composeapplication.bottom_nav
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -14,10 +12,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -36,8 +39,14 @@ fun CustomBottomNavigation(navController: NavController) {
     BottomNavigation(
         modifier = Modifier
             .padding(16.dp)
-            .clip(CircleShape),
-        backgroundColor = colorResource(id = R.color.purple_500)
+            .clip(RoundedCornerShape(16.dp))
+            .paint(
+                painter = painterResource(R.drawable.a),
+                contentScale = ContentScale.FillWidth
+            )
+            .background(Color.Black.copy(alpha = 0.9f)),
+        //To use Modifier.background(...).paint(...) we have to set backgroundColor as transparent.
+        backgroundColor = Color.Transparent
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -49,9 +58,15 @@ fun CustomBottomNavigation(navController: NavController) {
                 icon = {
                     Column(
                         modifier = Modifier
-                            .clip(CircleShape)
-                            .fillMaxSize()
-                            .background(if (isSelectedItem) colorResource(id = R.color.purple_200) else Color.Transparent),
+                            .clip(RoundedCornerShape(6.dp))
+                            .fillMaxHeight(0.7f)
+                            .fillMaxWidth(0.9f)
+                            .background(
+                                if (isSelectedItem)
+                                    colorResource(id = R.color.purple_200)
+                                else
+                                    Color.Transparent
+                            ),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -59,7 +74,7 @@ fun CustomBottomNavigation(navController: NavController) {
                             imageVector = item.icon,
                             contentDescription = item.title,
                             tint = if (isSelectedItem) colorResource(id = R.color.purple_700)
-                            else Color.Black.copy(alpha = 0.4f)
+                            else Color.White.copy(alpha = 0.4f)
                         )
 
                         AnimatedVisibility(
