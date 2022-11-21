@@ -1,6 +1,7 @@
 package com.example.composeapplication.bottom_nav
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
@@ -36,74 +38,92 @@ fun CustomBottomNavigation(navController: NavController) {
         BottomNavItem.Notifications,
     )
 
-    BottomNavigation(
+    //To make background of bottom nav blur I used Box with a blurred Image and BottomNavigation in it.
+    Box(
         modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
             .padding(16.dp)
             .clip(RoundedCornerShape(16.dp))
-            .paint(
-                painter = painterResource(R.drawable.a),
-                contentScale = ContentScale.FillWidth
-            )
-            .background(Color.Black.copy(alpha = 0.9f)),
-        //To use Modifier.background(...).paint(...) we have to set backgroundColor as transparent.
-        backgroundColor = Color.Transparent
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+        //Blurred image as background.
+        Image(
+            painter = painterResource(R.drawable.a),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .blur(
+                    radiusX = 16.dp,
+                    radiusY = 16.dp,
+                    edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(8.dp))
+                )
+        )
 
-        bottomNavItems.forEach { item ->
-            val isSelectedItem = item.screenRoute == currentRoute
+        BottomNavigation(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            //To remove white background:
+            elevation = 0.dp,
+            //To use Modifier.background(...).paint(...) we have to set backgroundColor as transparent.
+            backgroundColor = Color.Transparent,
+            contentColor = Color.Transparent
+        ) {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
 
-            BottomNavigationItem(
-                icon = {
-                    Column(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
-                            .fillMaxHeight(0.7f)
-                            .fillMaxWidth(0.9f)
-                            .background(
-                                if (isSelectedItem)
-                                    colorResource(id = R.color.purple_200)
-                                else
-                                    Color.Transparent
-                            ),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = item.title,
-                            tint = if (isSelectedItem) colorResource(id = R.color.purple_700)
-                            else Color.White.copy(alpha = 0.4f)
-                        )
+            bottomNavItems.forEach { item ->
+                val isSelectedItem = item.screenRoute == currentRoute
 
-                        AnimatedVisibility(
-                            visible = isSelectedItem
+                BottomNavigationItem(
+                    icon = {
+                        Column(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(16.dp))
+                                .fillMaxSize()
+                                .background(
+                                    if (isSelectedItem)
+                                        Color.Black.copy(alpha = 0.5f)
+                                    else
+                                        Color.Transparent
+                                ),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = item.title,
-                                fontSize = 11.sp,
-                                modifier = Modifier.padding(top = 4.dp)
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = item.title,
+                                tint = if (isSelectedItem) colorResource(id = R.color.purple_200)
+                                else Color.White.copy(alpha = 0.6f)
                             )
-                        }
-                    }
-                },
-                selectedContentColor = Color.Black,
-                unselectedContentColor = Color.Black.copy(0.4f),
-                alwaysShowLabel = false,
-                selected = currentRoute == item.screenRoute,
-                onClick = {
-                    navController.navigate(item.screenRoute) {
-                        navController.graph.startDestinationRoute?.let { screenRoute ->
-                            popUpTo(screenRoute) {
-                                saveState = true
+
+                            AnimatedVisibility(
+                                visible = isSelectedItem
+                            ) {
+                                Text(
+                                    text = item.title,
+                                    fontSize = 11.sp,
+                                    color = Color.White,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
                             }
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    },
+                    selected = isSelectedItem,
+                    onClick = {
+                        navController.navigate(item.screenRoute) {
+                            navController.graph.startDestinationRoute?.let { screenRoute ->
+                                popUpTo(screenRoute) {
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 }
