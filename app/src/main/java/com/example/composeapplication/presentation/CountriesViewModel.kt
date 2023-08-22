@@ -6,12 +6,15 @@ import com.example.composeapplication.domain.model.DetailedCountry
 import com.example.composeapplication.domain.model.SimpleCountry
 import com.example.composeapplication.domain.use_case.GetCountriesUseCase
 import com.example.composeapplication.domain.use_case.GetCountryDetailUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CountriesViewModel(
+@HiltViewModel
+class CountriesViewModel @Inject constructor(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCountryDetailUseCase: GetCountryDetailUseCase
 ) : ViewModel() {

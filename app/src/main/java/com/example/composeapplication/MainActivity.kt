@@ -6,21 +6,31 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.composeapplication.presentation.CountriesScreen
+import com.example.composeapplication.presentation.CountriesViewModel
 import com.example.composeapplication.ui.theme.ComposeApplicationTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
+                val viewModel = hiltViewModel<CountriesViewModel>()
+                val state by viewModel.state.collectAsState()
 
-                }
+                CountriesScreen(
+                    state = state,
+                    onSelectCountry = {
+                        viewModel.selectCountry(it)
+                    },
+                    onDismissDialog = {}
+                )
             }
         }
     }
