@@ -29,7 +29,9 @@ class MainActivity : ComponentActivity() {
                     onSelectCountry = {
                         viewModel.selectCountry(it)
                     },
-                    onDismissDialog = {}
+                    onDismissDialog = {
+                        viewModel.dismissCountryDialog()
+                    }
                 )
             }
         }
