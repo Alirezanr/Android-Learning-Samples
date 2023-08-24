@@ -15,7 +15,7 @@ import java.io.IOException
 /**
  *  Central control unit of paging.
  *  Controls paging logic that puts loaded items from remote api to local database and
- *  then forwards just the page we want to load in ui.20:34
+ *  then forwards just the page we want to load in ui.
  */
 @OptIn(ExperimentalPagingApi::class)
 class BeerRemoteMediator(
