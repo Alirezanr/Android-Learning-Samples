@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.composeapplication.domain.model.Beer
-import com.example.composeapplication.ui.theme.ComposeApplicationTheme
+import com.example.composeapplication.presentation.ui.theme.ComposeApplicationTheme
 
 @Composable
 fun BeerItem(
@@ -96,7 +96,7 @@ fun BeerItem(
 }
 
 
-//@Preview
+@Preview
 @Composable
 fun BeerItemPreview() {
     ComposeApplicationTheme {
