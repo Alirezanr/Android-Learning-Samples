@@ -41,3 +41,14 @@ fun DefaultPreview() {
         Greeting("Android")
     }
 }
+
+/**
+ * Notes:
+ * AAA Testing : Assemble,Act,Assert
+ * First, in the Arrange stage, you create all of the objects and variables you require for your test.
+ * In the Act stage, you perform the behavior you wish to test. For example, this could be calling a particular method on your test object.
+ * Finally, in the Assert stage, you test that the final result (e.g., object property values) is what you'd expect if the behavior had executed correctly.
+ *
+ *
+ *
+ */
