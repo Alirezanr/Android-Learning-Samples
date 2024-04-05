@@ -3,7 +3,9 @@ package com.example.composeapplication
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import kotlinx.collections.immutable.mutate
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +14,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         lifecycleScope.launchWhenStarted {
+            //read from data store
+            appSettingsDataStore.data.collectLatest {
+
+            }
             val preferences = UserAuthPreferences(this@MainActivity)
             preferences.saveAuthToken("Some token to save")
 
@@ -20,6 +26,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+    }
+
+    private suspend fun setData(lang: Language, location: Location) {
+        //write to data store:
+        appSettingsDataStore.updateData {
+            it.copy(
+                language = lang,
+                knownLocations = it.knownLocations.mutate {
+                    it.add(location)
+                }
+            )
+        }
     }
 
 }
