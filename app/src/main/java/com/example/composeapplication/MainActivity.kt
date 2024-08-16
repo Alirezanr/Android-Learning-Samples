@@ -1,15 +1,12 @@
 package com.example.composeapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import com.example.composeapplication.ui.theme.ComposeApplicationTheme
+import androidx.lifecycle.lifecycleScope
 import dan.nr.cryptograph.CryptoSession
 import dan.nr.cryptograph.CryptoSessionImpl
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -17,15 +14,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            ComposeApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-
-                }
+        val key = session.getAESService().generateSecretKey(128)
+        Log.d("key", key.toString())
+        lifecycleScope.launch {
+            val textToEncrypt = "Hello World!"
+            val encryptedText = session.getAESService().encrypt(textToEncrypt, key)
+            Log.d("encryptedText", encryptedText.toString())
+            if (encryptedText != null) {
+                val decryptedText = session.getAESService().decrypt(encryptedText!!, key)
+                Log.d("decryptedText", decryptedText.toString())
             }
         }
     }
