@@ -90,4 +90,6 @@ dependencies {
     androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     testImplementation(libs.androidx.compose.ui.test.junit4)
+
+    implementation(project(":cryptography"))
 }

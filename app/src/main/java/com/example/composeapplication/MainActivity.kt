@@ -6,13 +6,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.composeapplication.ui.theme.ComposeApplicationTheme
+import dan.nr.cryptograph.CryptoSession
+import dan.nr.cryptograph.CryptoSessionImpl
 
 class MainActivity : ComponentActivity() {
+
+    val session: CryptoSession = CryptoSessionImpl()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,22 +24,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ComposeApplicationTheme {
-        Greeting("Android")
     }
 }
