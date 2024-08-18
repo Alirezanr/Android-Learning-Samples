@@ -1,5 +1,6 @@
 package dan.nr.cryptograph.aes
 
+import java.io.File
 import javax.crypto.SecretKey
 
 interface AESService {
@@ -10,5 +11,8 @@ interface AESService {
 
     suspend fun encrypt(message: String, secretKey: SecretKey): String?
     suspend fun decrypt(message: String, secretKey: SecretKey): String?
+
+    suspend fun encryptFile(inputFile: File, outputFile: File, key: SecretKey): File?
+    suspend fun decryptFile(encryptedFile: File, outputFile: File, key: SecretKey): File?
 
 }

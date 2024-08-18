@@ -4,9 +4,16 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.security.Security
 import java.util.Arrays
 import java.util.Base64
 import javax.crypto.Cipher
+import javax.crypto.CipherInputStream
+import javax.crypto.CipherOutputStream
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
@@ -68,4 +75,56 @@ class AESServiceImpl : AESService {
             return@withContext decryptedText
         }
 
+    override suspend fun encryptFile(inputFile: File, outputFile: File, key: SecretKey): File? =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                Security.addProvider(BouncyCastleProvider())
+                cipher.init(Cipher.ENCRYPT_MODE, key)
+                val iv = cipher.iv
+                val inputStream = FileInputStream(inputFile)
+                val outputStream = FileOutputStream(outputFile)
+                outputStream.write(iv)
+                val cipherOutputStream = CipherOutputStream(outputStream, cipher)
+                val buffer = ByteArray(1024)
+                var bytesRead: Int
+                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                    cipherOutputStream.write(buffer, 0, bytesRead)
+                }
+                cipherOutputStream.close()
+                outputStream.close()
+                inputStream.close()
+
+                outputFile
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+    override suspend fun decryptFile(encryptedFile: File, outputFile: File, key: SecretKey): File? =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                Security.addProvider(BouncyCastleProvider())
+                val encryptedDataInputStream = FileInputStream(encryptedFile)
+                val iv = ByteArray(ivSize)
+                encryptedDataInputStream.read(iv, 0, ivSize)
+                cipher.init(Cipher.DECRYPT_MODE, key, IvParameterSpec(iv))
+                val outputStream = FileOutputStream(outputFile)
+                val cipherInputStream = CipherInputStream(encryptedDataInputStream, cipher)
+                val buffer = ByteArray(1024)
+                var bytesRead: Int
+                while (cipherInputStream.read(buffer).also { bytesRead = it } != -1) {
+                    outputStream.write(buffer, 0, bytesRead)
+                }
+
+                cipherInputStream.close()
+                outputStream.close()
+                encryptedDataInputStream.close()
+                
+                outputFile
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
 }
